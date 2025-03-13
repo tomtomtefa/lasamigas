@@ -33,7 +33,9 @@ ALLOWED_HOSTS = [
 ]
 
 
-CSRF_TRUSTED_ORIGINS = ['https://2687-78-126-54-178.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = [
+    "https://lasamigas-app-e8ea50d13c4b.herokuapp.com"
+]
 
 
 
@@ -63,11 +65,17 @@ INSTALLED_APPS = [
 # settings.py
 ASGI_APPLICATION = "dating_app.asgi.application"
 
+
+# Configuration pour utiliser Redis (recommandé)
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer",
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.getenv("REDIS_URL", "redis://localhost:6379")],
+        },
     },
 }
+
 
 # Autoriser WebSockets depuis ngrok
 CSRF_TRUSTED_ORIGINS = [
