@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="chat-container">
+    <h2 class="text-center">💬 Chat Room</h2>
+    <div id="chat-box" class="chat-box border shadow-sm" style="height:400px; overflow:auto;"></div>
+    <div class="input-group mt-3">
+        <input type="text" id="message-input" class="form-control" placeholder="Écris ton message...">
+        <button id="send-button" class="btn btn-primary">Envoyer</button>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const socket = new WebSocket(`${protocol}://${window.location.host}/ws/chat/`);
+
+    socket.onopen = () => console.log("🟢 WebSocket ouvert !");
+    socket.onerror = (error) => console.log("⚠️ Erreur WebSocket :", error);
+    socket.onclose = () => console.log("🔴 WebSocket fermé !");
+
+    socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        afficherMessage(data.message, "received");
+    };
+
+    document.getElementById("send-button").onclick = () => {
+        const messageInput = document.getElementById("message-input");
+        const message = messageInput.value;
+
+        if (socket.readyState === WebSocket.OPEN && message) {
+            socket.send(JSON.stringify({ message: message }));
+            afficherMessage(message, "sent");
+            messageInput.value = "";
+        } else {
+            console.error("⚠️ Le socket n'est pas ouvert ou message vide");
+        }
+    };
+
+    function afficherMessage(message, type) {
+        const chatBox = document.getElementById("chat-box");
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", type);
+        messageDiv.textContent = message;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+});
+</script>
+{% endblock %}

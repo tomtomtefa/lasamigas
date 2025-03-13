@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="card mx-auto mt-4" style="max-width: 500px;">
+        <div class="card-body">
+            <h2 class="text-center">✏️ Modifier mon profil</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-success">💾 Sauvegarder</button>
+                    <a href="{% url 'user-profile' username=request.user.username %}" class="btn btn-danger">❌ Annuler</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

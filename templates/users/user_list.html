@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mt-4 text-center">📋 Liste des utilisateurs</h2>
+    <div class="row">
+        {% for user in users %}
+            <div class="col-md-4">
+                <div class="card my-3">
+                    {% if user.photo %}
+                        <img src="{{ user.photo.url }}" class="card-img-top" alt="{{ user.username }}">
+                    {% else %}
+                        <img src="https://via.placeholder.com/150" class="card-img-top" alt="Image par défaut">
+                    {% endif %}
+                    <div class="card-body text-center">
+                        <h5 class="card-title">{{ user.username }}</h5>
+                        <p class="card-text">{{ user.bio|default:"Aucune bio disponible" }}</p>
+                        <p class="card-text"><strong>Âge :</strong> {{ user.age|default:"Non précisé" }}</p>
+                        <p class="card-text"><strong>Localisation :</strong> {{ user.location|default:"Non précisée" }}</p>
+                        <a href="{% url 'user-profile' username=user.username %}" class="btn btn-primary btn-sm">
+                            Voir Profil
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center">
+                <p>Aucun utilisateur trouvé.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
