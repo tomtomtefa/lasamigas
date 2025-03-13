@@ -26,10 +26,12 @@ SECRET_KEY = 'django-insecure-l3ufssa9ogt+u!&s)$%97vb$fwr#(vj-pa25$u9(&^p)*^n9*u
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    '2687-78-126-54-178.ngrok-free.app'  # Remplace par ton lien actuel ngrok
+    '127.0.0.1', 
+    'localhost', 
+    '2687-78-126-54-178.ngrok-free.app',
+    'lasamigas-app-e8ea50d13c4b.herokuapp.com'
 ]
+
 
 CSRF_TRUSTED_ORIGINS = ['https://2687-78-126-54-178.ngrok-free.app']
 
