@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,9 +33,7 @@ ALLOWED_HOSTS = [
 ]
 
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://lasamigas-app-e8ea50d13c4b.herokuapp.com"
-]
+CSRF_TRUSTED_ORIGINS = ['https://2687-78-126-54-178.ngrok-free.app']
 
 
 
@@ -65,6 +62,7 @@ INSTALLED_APPS = [
 
 # settings.py
 ASGI_APPLICATION = "dating_app.asgi.application"
+
 
 
 # Configuration pour utiliser Redis (recommandé)
