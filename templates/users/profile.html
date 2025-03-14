@@ -20,22 +20,13 @@
             
             {% if request.user != user %}
                 <button id="like-button" class="btn btn-primary mt-2">
-                    {% if liked %}
-                        ✅ Déjà Liké !
-                    {% else %}
-                        ❤️ Liker
-                    {% endif %}
+                    ❤️ Liker
                 </button>
             {% endif %}
             
             {% if request.user == user %}
                 <a href="{% url 'edit-profile' username=user.username %}" class="btn btn-warning">
                     ✏️ Modifier mon profil
-                </a>
-                
-                <!-- ✅ Correction du bouton pour voir qui m'a liké -->
-                <a href="{% url 'liked-users' username=user.username %}" class="btn btn-info mt-2">
-                    💖 Voir mes likes
                 </a>
             {% endif %}
             
@@ -44,7 +35,6 @@
     </div>
 </div>
 
-<!-- ✅ Correction du bouton Like avec une requête POST -->
 <script>
     document.getElementById("like-button")?.addEventListener("click", function() {
         fetch("{% url 'like-user' username=user.username %}", {
