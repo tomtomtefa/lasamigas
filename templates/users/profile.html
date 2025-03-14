@@ -17,22 +17,48 @@
             <p><strong>🎂 Âge :</strong> {{ user.age|default:"Non précisé" }}</p>
             <p><strong>📍 Localisation :</strong> {{ user.location|default:"Non précisée" }}</p>
             <hr>
-            
+
+            <!-- 🔹 Bouton Liker -->
             {% if request.user != user %}
                 <button id="like-button" class="btn btn-primary mt-2">
-                    ❤️ Liker
+                    {% if liked %}
+                        ✅ Déjà Liké !
+                    {% else %}
+                        ❤️ Liker
+                    {% endif %}
                 </button>
             {% endif %}
-            
+
+            <!-- 🔹 Boutons de gestion du profil -->
             {% if request.user == user %}
                 <a href="{% url 'edit-profile' username=user.username %}" class="btn btn-warning">
                     ✏️ Modifier mon profil
+                </a>
+
+                <!-- 🔹 Voir les personnes qui ont liké -->
+                <a href="{% url 'liked-users' username=user.username %}" class="btn btn-info mt-2">
+                    💖 Voir qui m'a liké
                 </a>
             {% endif %}
             
             <a href="{% url 'user-list-page' %}" class="btn btn-secondary mt-2">⬅️ Retour aux utilisateurs</a>
         </div>
     </div>
+
+    {% if request.user == user %}
+    <div class="mt-4">
+        <h4>💖 Ces utilisateurs t'ont liké :</h4>
+        <ul class="list-group">
+            {% for liker in likers %}
+                <li class="list-group-item">
+                    <a href="{% url 'user-profile' username=liker.username %}">{{ liker.username }}</a>
+                </li>
+            {% empty %}
+                <li class="list-group-item text-center">Personne ne vous a encore liké 😢</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
 </div>
 
 <script>
