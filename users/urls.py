@@ -26,7 +26,7 @@ urlpatterns = [
     path('like/<str:username>/', LikeUserView.as_view(), name='like-user'),  # Liker un utilisateur
     path('unlike/<str:username>/', UnlikeUserView.as_view(), name='unlike-user'),  # Retirer un like
     path('likes/', LikedUsersListView.as_view(), name='likes-received'),  # Voir qui m'a liké
-    path('profile/<str:username>/likes/', liked_users_list, name='liked-users'),
+    
 
     # 🔹 Debug (optionnel)
     path('debug/', debug_info, name='debug-info'),  # Voir tous les utilisateurs en JSON (test)
