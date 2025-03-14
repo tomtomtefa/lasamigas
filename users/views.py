@@ -69,8 +69,9 @@ def user_profile(request, username):
     """
     user = get_object_or_404(UserProfile, username=username)
     liked = Like.objects.filter(user=request.user, liked_user=user).exists()  # Vérifie si l'utilisateur actuel a liké ce profil
+    likers = UserProfile.objects.filter(id__in=Like.objects.filter(liked_user=user).values_list("user", flat=True))  # Qui a liké cet utilisateur
 
-    return render(request, 'users/profile.html', {'user': user, 'liked': liked})
+    return render(request, 'users/profile.html', {'user': user, 'liked': liked, 'likers': likers})
 
 
 # 🔹 Modification du profil utilisateur
@@ -136,9 +137,21 @@ class UnlikeUserView(APIView):
 
 
 # 🔹 Voir les utilisateurs qui vous ont liké
+@login_required
+def liked_users_list(request, username):
+    """
+    Affiche la liste des utilisateurs qui ont liké un utilisateur spécifique.
+    """
+    user = get_object_or_404(UserProfile, username=username)
+    likers = UserProfile.objects.filter(id__in=Like.objects.filter(liked_user=user).values_list("user", flat=True))
+
+    return render(request, 'users/liked_users.html', {'user': user, 'likers': likers})
+
+
+# 🔹 API REST - Voir les utilisateurs qui ont liké un utilisateur
 class LikedUsersListView(generics.ListAPIView):
     """
-    Liste des utilisateurs qui ont liké le profil actuel.
+    Liste des utilisateurs qui ont liké l'utilisateur connecté (format JSON).
     """
     serializer_class = UserProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
