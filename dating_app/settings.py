@@ -58,7 +58,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.getenv("REDIS_URL")],
+            "hosts": [os.getenv("REDIS_URL", "redis://default:gWRytHCkmHMSTcTJhDgnjtsemDTscQCU@redis.railway.internal:6379")],
         },
     },
 }
