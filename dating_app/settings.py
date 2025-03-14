@@ -27,13 +27,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '127.0.0.1', 
-    'localhost', 
-    '2687-78-126-54-178.ngrok-free.app',
+    'localhost',
     'lasamigas-app-e8ea50d13c4b.herokuapp.com'
 ]
 
 
-CSRF_TRUSTED_ORIGINS = ['https://2687-78-126-54-178.ngrok-free.app']
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://lasamigas-app-e8ea50d13c4b.herokuapp.com",
+    "http://127.0.0.1:8000"
+]
+
 
 
 
@@ -63,7 +67,7 @@ INSTALLED_APPS = [
 # settings.py
 ASGI_APPLICATION = "dating_app.asgi.application"
 
-
+ASGI_APPLICATION = "dating_app.asgi.application"
 
 # Configuration pour utiliser Redis (recommandé)
 CHANNEL_LAYERS = {
