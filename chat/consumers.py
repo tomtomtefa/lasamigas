@@ -11,7 +11,7 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         self.other_username = self.scope["url_route"]["kwargs"]["username"]
         self.other_user = await self.get_user(self.other_username)
 
-        if self.user.is_authenticated:
+        if self.user.is_authenticated and self.other_user:
             self.room_group_name = f"chat_{min(self.user.id, self.other_user.id)}_{max(self.user.id, self.other_user.id)}"
             await self.channel_layer.group_add(self.room_group_name, self.channel_name)
             await self.accept()
@@ -43,10 +43,10 @@ class PrivateChatConsumer(AsyncWebsocketConsumer):
         }))
 
     async def save_message(self, sender, receiver, message):
-        return Message.objects.create(sender=sender, receiver=receiver, content=message)
+        return await Message.objects.acreate(sender=sender, receiver=receiver, content=message)
 
     async def get_user(self, username):
         try:
-            return await User.objects.get(username=username)
+            return await User.objects.aget(username=username)
         except User.DoesNotExist:
             return None

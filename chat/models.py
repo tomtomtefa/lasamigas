@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import UserProfile  # ✅ Import correct du modèle UserProfile
+from users.models import UserProfile  # ✅ Import du modèle UserProfile
 
 class Message(models.Model):
     sender = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="sent_messages")

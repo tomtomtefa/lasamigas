@@ -1,8 +1,8 @@
 from django.urls import path
-from .views import chat_room, private_chat, MessageListCreateView
+from .views import MessageListCreateView, private_chat, test_messages_api  # ✅ Vérifie les imports
 
 urlpatterns = [
-    path("", chat_room, name="chat-room"),  # ✅ Page principale du chat
-    path("<str:username>/", private_chat, name="private-chat"),  # ✅ Messagerie privée (Correction ici)
-    path("messages/", MessageListCreateView.as_view(), name="message-list-create"),  # ✅ API pour gérer les messages
+    path("messages/", MessageListCreateView.as_view(), name="message-list-create"),  # ✅ Doit être AVANT `private_chat`
+    path("test-api/", test_messages_api, name="test-api"),  # ✅ Doit être AVANT `private_chat`
+    path("<str:username>/", private_chat, name="private-chat"),  # ✅ Cette route doit être en dernier
 ]
