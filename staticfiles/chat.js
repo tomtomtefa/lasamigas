@@ -1,32 +1,39 @@
-const socket = new WebSocket("wss://e3e8-78-126-54-178.ngrok-free.app/ws/chat/");
+const socket = new WebSocket("wss://be10-78-126-54-178.ngrok-free.app/ws/chat/");
 
-socket.onopen = () => {
-    console.log("✅ WebSocket ouvert !");
+socket.onopen = function () {
+    console.log("WebSocket connecté !");
 };
 
-socket.onmessage = (event) => {
-    console.log("📩 Message reçu :", event.data);
-};
+socket.onmessage = function (event) {
+    const data = JSON.parse(event.data);
+    console.log("Message reçu :", data);
 
-socket.onerror = (error) => {
-    console.log("⚠️ Erreur WebSocket :", error);
-};
-
-socket.onclose = (event) => {
-    console.log("🔴 WebSocket fermé ! Rétablissement en cours...");
-    setTimeout(() => {
-        window.location.reload();  // Recharge la page après 3s si WebSocket est fermé
-    }, 3000);
-};
-
-document.getElementById("send-button").onclick = function() {
-    const messageInput = document.getElementById("message-input");
-    const message = messageInput.value.trim();
-
-    if (message && socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({ message: message }));
-        console.log("📤 Envoi du message :", message);
+    let chatLog = document.querySelector("#chat-box");
+    if (chatLog) {
+        chatLog.innerHTML += `<p>${data.message}</p>`;
     } else {
-        console.log("⚠️ Impossible d'envoyer, WebSocket fermé.");
+        console.error("Élément #chat-box introuvable !");
     }
 };
+
+socket.onerror = function (event) {
+    console.error("Erreur WebSocket :", event);
+};
+
+socket.onclose = function (event) {
+    console.log("WebSocket fermé :", event);
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+    let sendButton = document.querySelector("#chat-send");
+    let messageInput = document.querySelector("#message-input");
+
+    if (sendButton && messageInput) {
+        sendButton.onclick = function () {
+            const message = messageInput.value;
+            socket.send(JSON.stringify({ message: message }));
+        };
+    } else {
+        console.error("Bouton ou champ message introuvable !");
+    }
+});

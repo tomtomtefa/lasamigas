@@ -1,0 +1,49 @@
+<h1>Bienvenue sur la messagerie privée</h1>
+
+<div id="chat-box">
+    <!-- Les messages reçus seront affichés ici -->
+</div>
+
+<form id="chat-form">
+    <input type="text" id="message-input" placeholder="Écrire un message..." required>
+    <button type="submit">Envoyer</button>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let chatForm = document.getElementById("chat-form");
+        let messageInput = document.getElementById("message-input");
+        let chatBox = document.getElementById("chat-box");
+
+        if (chatForm && messageInput && chatBox) {
+            chatForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                let message = messageInput.value.trim();
+                if (message) {
+                    fetch("{% url 'message-list-create' %}", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": "{{ csrf_token }}",
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            receiver: "{{ other_user.id }}",
+                            content: message
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.id) {
+                            let newMessage = document.createElement("p");
+                            newMessage.innerHTML = `<strong>Vous:</strong> ${message}`;
+                            chatBox.appendChild(newMessage);
+                            messageInput.value = "";
+                        }
+                    });
+                }
+            });
+        } else {
+            console.error("Éléments du chat non trouvés !");
+        }
+    });
+</script>

@@ -29,6 +29,13 @@
                     ✏️ Modifier mon profil
                 </a>
             {% endif %}
+
+            {% if request.user != user %}
+                 <a href="{% url 'private-chat' username=user.username %}" class="btn btn-success mt-2">
+                    💬 Envoyer un message
+                 </a>
+            {% endif %}
+
             
             <a href="{% url 'user-list-page' %}" class="btn btn-secondary mt-2">⬅️ Retour aux utilisateurs</a>
         </div>
